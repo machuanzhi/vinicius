@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smk.pay.order.dao.OrderTxnDetailEntityMapper">
+  <resultMap id="BaseResultMap" type="com.smk.pay.order.entity.OrderTxnDetailEntity">
+    <id column="TXN_ID" jdbcType="DECIMAL" property="txnId" />
+    <result column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+    <result column="REL_ID" jdbcType="DECIMAL" property="relId" />
+    <result column="SEQ" jdbcType="VARCHAR" property="seq" />
+    <result column="TXN_CATEGORY" jdbcType="DECIMAL" property="txnCategory" />
+    <result column="TXN_RESULT" jdbcType="DECIMAL" property="txnResult" />
+    <result column="TXN_TIME" jdbcType="VARCHAR" property="txnTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    TXN_ID, ORDER_ID, REL_ID, SEQ, TXN_CATEGORY, TXN_RESULT, TXN_TIME
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from T_TXN_DETAIL
+    where TXN_ID = #{txnId,jdbcType=DECIMAL}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from T_TXN_DETAIL
+    where TXN_ID = #{txnId,jdbcType=DECIMAL}
+  </delete>
+  <insert id="insert" parameterType="com.smk.pay.order.entity.OrderTxnDetailEntity">
+    insert into T_TXN_DETAIL (TXN_ID, ORDER_ID, REL_ID,
+    SEQ, TXN_CATEGORY, TXN_RESULT,
+    TXN_TIME)
+    values (#{txnId,jdbcType=DECIMAL}, #{orderId,jdbcType=VARCHAR}, #{relId,jdbcType=DECIMAL},
+    #{seq,jdbcType=VARCHAR}, #{txnCategory,jdbcType=DECIMAL}, #{txnResult,jdbcType=DECIMAL},
+    #{txnTime,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.smk.pay.order.entity.OrderTxnDetailEntity">
+    insert into T_TXN_DETAIL
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="txnId != null">
+        TXN_ID,
+      </if>
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="relId != null">
+        REL_ID,
+      </if>
+      <if test="seq != null">
+        SEQ,
+      </if>
+      <if test="txnCategory != null">
+        TXN_CATEGORY,
+      </if>
+      <if test="txnResult != null">
+        TXN_RESULT,
+      </if>
+      <if test="txnTime != null">
+        TXN_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="txnId != null">
+        #{txnId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="relId != null">
+        #{relId,jdbcType=DECIMAL},
+      </if>
+      <if test="seq != null">
+        #{seq,jdbcType=VARCHAR},
+      </if>
+      <if test="txnCategory != null">
+        #{txnCategory,jdbcType=DECIMAL},
+      </if>
+      <if test="txnResult != null">
+        #{txnResult,jdbcType=DECIMAL},
+      </if>
+      <if test="txnTime != null">
+        #{txnTime,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smk.pay.order.entity.OrderTxnDetailEntity">
+    update T_TXN_DETAIL
+    <set>
+      <if test="orderId != null">
+        ORDER_ID = #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="relId != null">
+        REL_ID = #{relId,jdbcType=DECIMAL},
+      </if>
+      <if test="seq != null">
+        SEQ = #{seq,jdbcType=VARCHAR},
+      </if>
+      <if test="txnCategory != null">
+        TXN_CATEGORY = #{txnCategory,jdbcType=DECIMAL},
+      </if>
+      <if test="txnResult != null">
+        TXN_RESULT = #{txnResult,jdbcType=DECIMAL},
+      </if>
+      <if test="txnTime != null">
+        TXN_TIME = #{txnTime,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where TXN_ID = #{txnId,jdbcType=DECIMAL}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smk.pay.order.entity.OrderTxnDetailEntity">
+    update T_TXN_DETAIL
+    set ORDER_ID = #{orderId,jdbcType=VARCHAR},
+    REL_ID = #{relId,jdbcType=DECIMAL},
+    SEQ = #{seq,jdbcType=VARCHAR},
+    TXN_CATEGORY = #{txnCategory,jdbcType=DECIMAL},
+    TXN_RESULT = #{txnResult,jdbcType=DECIMAL},
+    TXN_TIME = #{txnTime,jdbcType=VARCHAR}
+    where TXN_ID = #{txnId,jdbcType=DECIMAL}
+  </update>
+
+</mapper>

@@ -1,0 +1,513 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.smk.pay.order.dao.OrderEntityMapper">
+  <resultMap id="BaseResultMap" type="com.smk.pay.order.entity.OrderEntity">
+    <id column="ORDER_ID" jdbcType="VARCHAR" property="orderId" />
+    <result column="PAY_GATEWAY_ID" jdbcType="DECIMAL" property="payGatewayId" />
+    <result column="MERCHANT_ID" jdbcType="VARCHAR" property="merchantId" />
+    <result column="MERCHANT_NAME" jdbcType="VARCHAR" property="merchantName" />
+    <result column="BUSINESS_TAG_NAME" jdbcType="VARCHAR" property="businessTagName" />
+    <result column="BUSINESS_TAG_CODE" jdbcType="DECIMAL" property="businessTagCode" />
+    <result column="CHANNEL_ID" jdbcType="DECIMAL" property="channelId" />
+    <result column="ORDER_STATE" jdbcType="DECIMAL" property="orderState" />
+    <result column="PAY_TYPE" jdbcType="DECIMAL" property="payType" />
+    <result column="ISSUED_TIME" jdbcType="VARCHAR" property="issuedTime" />
+    <result column="PAY_TIME" jdbcType="VARCHAR" property="payTime" />
+    <result column="CLOSE_TIME" jdbcType="VARCHAR" property="closeTime" />
+    <result column="PERSON" jdbcType="VARCHAR" property="person" />
+    <result column="USER_ID" jdbcType="VARCHAR" property="userId" />
+    <result column="CARD_TYPE" jdbcType="DECIMAL" property="cardType" />
+    <result column="CARD_NO" jdbcType="VARCHAR" property="cardNo" />
+    <result column="GOODS_AMOUNT" jdbcType="DECIMAL" property="goodsAmount" />
+    <result column="OTHER_PAY" jdbcType="DECIMAL" property="otherPay" />
+    <result column="SETTLE_FORMULA" jdbcType="VARCHAR" property="settleFormula" />
+    <result column="SETTLE_AMOUNT" jdbcType="DECIMAL" property="settleAmount" />
+    <result column="DEBIT_SNO" jdbcType="VARCHAR" property="debitSno" />
+    <result column="CREDIT_SNO" jdbcType="VARCHAR" property="creditSno" />
+    <result column="UBG_SNO" jdbcType="VARCHAR" property="ubgSno" />
+    <result column="TRANSACTION_RECORD" jdbcType="VARCHAR" property="transactionRecord" />
+  </resultMap>
+  <sql id="Query_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_Where_Clause">
+    <where>
+      <foreach collection="condition.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    ORDER_ID, PAY_GATEWAY_ID, MERCHANT_ID, MERCHANT_NAME, BUSINESS_TAG_NAME, BUSINESS_TAG_CODE, 
+    CHANNEL_ID, ORDER_STATE, PAY_TYPE, ISSUED_TIME, PAY_TIME, CLOSE_TIME, PERSON, USER_ID, 
+    CARD_TYPE, CARD_NO, GOODS_AMOUNT, OTHER_PAY, SETTLE_FORMULA, SETTLE_AMOUNT, DEBIT_SNO, 
+    CREDIT_SNO, UBG_SNO, TRANSACTION_RECORD
+  </sql>
+  <select id="selectList" parameterType="com.smk.pay.dal.condtion.EntityCondition" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from T_ORDER
+    <if test="_parameter != null">
+      <include refid="Query_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from T_ORDER
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.String">
+    delete from T_ORDER
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </delete>
+  <delete id="delete" parameterType="com.smk.pay.dal.condtion.EntityCondition">
+    delete from T_ORDER
+    <if test="_parameter != null">
+      <include refid="Query_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.smk.pay.order.entity.OrderEntity">
+    insert into T_ORDER (ORDER_ID, PAY_GATEWAY_ID, MERCHANT_ID, 
+      MERCHANT_NAME, BUSINESS_TAG_NAME, BUSINESS_TAG_CODE, 
+      CHANNEL_ID, ORDER_STATE, PAY_TYPE, 
+      ISSUED_TIME, PAY_TIME, CLOSE_TIME, 
+      PERSON, USER_ID, CARD_TYPE, 
+      CARD_NO, GOODS_AMOUNT, OTHER_PAY, 
+      SETTLE_FORMULA, SETTLE_AMOUNT, DEBIT_SNO, 
+      CREDIT_SNO, UBG_SNO, TRANSACTION_RECORD
+      )
+    values (#{orderId,jdbcType=VARCHAR}, #{payGatewayId,jdbcType=DECIMAL}, #{merchantId,jdbcType=VARCHAR}, 
+      #{merchantName,jdbcType=VARCHAR}, #{businessTagName,jdbcType=VARCHAR}, #{businessTagCode,jdbcType=DECIMAL}, 
+      #{channelId,jdbcType=DECIMAL}, #{orderState,jdbcType=DECIMAL}, #{payType,jdbcType=DECIMAL}, 
+      #{issuedTime,jdbcType=VARCHAR}, #{payTime,jdbcType=VARCHAR}, #{closeTime,jdbcType=VARCHAR}, 
+      #{person,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{cardType,jdbcType=DECIMAL}, 
+      #{cardNo,jdbcType=VARCHAR}, #{goodsAmount,jdbcType=DECIMAL}, #{otherPay,jdbcType=DECIMAL}, 
+      #{settleFormula,jdbcType=VARCHAR}, #{settleAmount,jdbcType=DECIMAL}, #{debitSno,jdbcType=VARCHAR}, 
+      #{creditSno,jdbcType=VARCHAR}, #{ubgSno,jdbcType=VARCHAR}, #{transactionRecord,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.smk.pay.order.entity.OrderEntity">
+    insert into T_ORDER
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        ORDER_ID,
+      </if>
+      <if test="payGatewayId != null">
+        PAY_GATEWAY_ID,
+      </if>
+      <if test="merchantId != null">
+        MERCHANT_ID,
+      </if>
+      <if test="merchantName != null">
+        MERCHANT_NAME,
+      </if>
+      <if test="businessTagName != null">
+        BUSINESS_TAG_NAME,
+      </if>
+      <if test="businessTagCode != null">
+        BUSINESS_TAG_CODE,
+      </if>
+      <if test="channelId != null">
+        CHANNEL_ID,
+      </if>
+      <if test="orderState != null">
+        ORDER_STATE,
+      </if>
+      <if test="payType != null">
+        PAY_TYPE,
+      </if>
+      <if test="issuedTime != null">
+        ISSUED_TIME,
+      </if>
+      <if test="payTime != null">
+        PAY_TIME,
+      </if>
+      <if test="closeTime != null">
+        CLOSE_TIME,
+      </if>
+      <if test="person != null">
+        PERSON,
+      </if>
+      <if test="userId != null">
+        USER_ID,
+      </if>
+      <if test="cardType != null">
+        CARD_TYPE,
+      </if>
+      <if test="cardNo != null">
+        CARD_NO,
+      </if>
+      <if test="goodsAmount != null">
+        GOODS_AMOUNT,
+      </if>
+      <if test="otherPay != null">
+        OTHER_PAY,
+      </if>
+      <if test="settleFormula != null">
+        SETTLE_FORMULA,
+      </if>
+      <if test="settleAmount != null">
+        SETTLE_AMOUNT,
+      </if>
+      <if test="debitSno != null">
+        DEBIT_SNO,
+      </if>
+      <if test="creditSno != null">
+        CREDIT_SNO,
+      </if>
+      <if test="ubgSno != null">
+        UBG_SNO,
+      </if>
+      <if test="transactionRecord != null">
+        TRANSACTION_RECORD,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="orderId != null">
+        #{orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="payGatewayId != null">
+        #{payGatewayId,jdbcType=DECIMAL},
+      </if>
+      <if test="merchantId != null">
+        #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTagName != null">
+        #{businessTagName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTagCode != null">
+        #{businessTagCode,jdbcType=DECIMAL},
+      </if>
+      <if test="channelId != null">
+        #{channelId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderState != null">
+        #{orderState,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null">
+        #{payType,jdbcType=DECIMAL},
+      </if>
+      <if test="issuedTime != null">
+        #{issuedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null">
+        #{closeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="person != null">
+        #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null">
+        #{cardType,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAmount != null">
+        #{goodsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherPay != null">
+        #{otherPay,jdbcType=DECIMAL},
+      </if>
+      <if test="settleFormula != null">
+        #{settleFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="settleAmount != null">
+        #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="debitSno != null">
+        #{debitSno,jdbcType=VARCHAR},
+      </if>
+      <if test="creditSno != null">
+        #{creditSno,jdbcType=VARCHAR},
+      </if>
+      <if test="ubgSno != null">
+        #{ubgSno,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionRecord != null">
+        #{transactionRecord,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="count" parameterType="com.smk.pay.dal.condtion.EntityCondition" resultType="java.lang.Integer">
+    select count(*) from T_ORDER
+    <if test="_parameter != null">
+      <include refid="Query_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateSelective" parameterType="map">
+    update T_ORDER
+    <set>
+      <if test="record.orderId != null">
+        ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payGatewayId != null">
+        PAY_GATEWAY_ID = #{record.payGatewayId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.merchantId != null">
+        MERCHANT_ID = #{record.merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.merchantName != null">
+        MERCHANT_NAME = #{record.merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessTagName != null">
+        BUSINESS_TAG_NAME = #{record.businessTagName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.businessTagCode != null">
+        BUSINESS_TAG_CODE = #{record.businessTagCode,jdbcType=DECIMAL},
+      </if>
+      <if test="record.channelId != null">
+        CHANNEL_ID = #{record.channelId,jdbcType=DECIMAL},
+      </if>
+      <if test="record.orderState != null">
+        ORDER_STATE = #{record.orderState,jdbcType=DECIMAL},
+      </if>
+      <if test="record.payType != null">
+        PAY_TYPE = #{record.payType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.issuedTime != null">
+        ISSUED_TIME = #{record.issuedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.payTime != null">
+        PAY_TIME = #{record.payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.closeTime != null">
+        CLOSE_TIME = #{record.closeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="record.person != null">
+        PERSON = #{record.person,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userId != null">
+        USER_ID = #{record.userId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.cardType != null">
+        CARD_TYPE = #{record.cardType,jdbcType=DECIMAL},
+      </if>
+      <if test="record.cardNo != null">
+        CARD_NO = #{record.cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="record.goodsAmount != null">
+        GOODS_AMOUNT = #{record.goodsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.otherPay != null">
+        OTHER_PAY = #{record.otherPay,jdbcType=DECIMAL},
+      </if>
+      <if test="record.settleFormula != null">
+        SETTLE_FORMULA = #{record.settleFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="record.settleAmount != null">
+        SETTLE_AMOUNT = #{record.settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="record.debitSno != null">
+        DEBIT_SNO = #{record.debitSno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.creditSno != null">
+        CREDIT_SNO = #{record.creditSno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.ubgSno != null">
+        UBG_SNO = #{record.ubgSno,jdbcType=VARCHAR},
+      </if>
+      <if test="record.transactionRecord != null">
+        TRANSACTION_RECORD = #{record.transactionRecord,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_Where_Clause" />
+    </if>
+  </update>
+  <update id="update" parameterType="map">
+    update T_ORDER
+    set ORDER_ID = #{record.orderId,jdbcType=VARCHAR},
+      PAY_GATEWAY_ID = #{record.payGatewayId,jdbcType=DECIMAL},
+      MERCHANT_ID = #{record.merchantId,jdbcType=VARCHAR},
+      MERCHANT_NAME = #{record.merchantName,jdbcType=VARCHAR},
+      BUSINESS_TAG_NAME = #{record.businessTagName,jdbcType=VARCHAR},
+      BUSINESS_TAG_CODE = #{record.businessTagCode,jdbcType=DECIMAL},
+      CHANNEL_ID = #{record.channelId,jdbcType=DECIMAL},
+      ORDER_STATE = #{record.orderState,jdbcType=DECIMAL},
+      PAY_TYPE = #{record.payType,jdbcType=DECIMAL},
+      ISSUED_TIME = #{record.issuedTime,jdbcType=VARCHAR},
+      PAY_TIME = #{record.payTime,jdbcType=VARCHAR},
+      CLOSE_TIME = #{record.closeTime,jdbcType=VARCHAR},
+      PERSON = #{record.person,jdbcType=VARCHAR},
+      USER_ID = #{record.userId,jdbcType=VARCHAR},
+      CARD_TYPE = #{record.cardType,jdbcType=DECIMAL},
+      CARD_NO = #{record.cardNo,jdbcType=VARCHAR},
+      GOODS_AMOUNT = #{record.goodsAmount,jdbcType=DECIMAL},
+      OTHER_PAY = #{record.otherPay,jdbcType=DECIMAL},
+      SETTLE_FORMULA = #{record.settleFormula,jdbcType=VARCHAR},
+      SETTLE_AMOUNT = #{record.settleAmount,jdbcType=DECIMAL},
+      DEBIT_SNO = #{record.debitSno,jdbcType=VARCHAR},
+      CREDIT_SNO = #{record.creditSno,jdbcType=VARCHAR},
+      UBG_SNO = #{record.ubgSno,jdbcType=VARCHAR},
+      TRANSACTION_RECORD = #{record.transactionRecord,jdbcType=VARCHAR}
+    <if test="_parameter != null">
+      <include refid="Update_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.smk.pay.order.entity.OrderEntity">
+    update T_ORDER
+    <set>
+      <if test="payGatewayId != null">
+        PAY_GATEWAY_ID = #{payGatewayId,jdbcType=DECIMAL},
+      </if>
+      <if test="merchantId != null">
+        MERCHANT_ID = #{merchantId,jdbcType=VARCHAR},
+      </if>
+      <if test="merchantName != null">
+        MERCHANT_NAME = #{merchantName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTagName != null">
+        BUSINESS_TAG_NAME = #{businessTagName,jdbcType=VARCHAR},
+      </if>
+      <if test="businessTagCode != null">
+        BUSINESS_TAG_CODE = #{businessTagCode,jdbcType=DECIMAL},
+      </if>
+      <if test="channelId != null">
+        CHANNEL_ID = #{channelId,jdbcType=DECIMAL},
+      </if>
+      <if test="orderState != null">
+        ORDER_STATE = #{orderState,jdbcType=DECIMAL},
+      </if>
+      <if test="payType != null">
+        PAY_TYPE = #{payType,jdbcType=DECIMAL},
+      </if>
+      <if test="issuedTime != null">
+        ISSUED_TIME = #{issuedTime,jdbcType=VARCHAR},
+      </if>
+      <if test="payTime != null">
+        PAY_TIME = #{payTime,jdbcType=VARCHAR},
+      </if>
+      <if test="closeTime != null">
+        CLOSE_TIME = #{closeTime,jdbcType=VARCHAR},
+      </if>
+      <if test="person != null">
+        PERSON = #{person,jdbcType=VARCHAR},
+      </if>
+      <if test="userId != null">
+        USER_ID = #{userId,jdbcType=VARCHAR},
+      </if>
+      <if test="cardType != null">
+        CARD_TYPE = #{cardType,jdbcType=DECIMAL},
+      </if>
+      <if test="cardNo != null">
+        CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAmount != null">
+        GOODS_AMOUNT = #{goodsAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="otherPay != null">
+        OTHER_PAY = #{otherPay,jdbcType=DECIMAL},
+      </if>
+      <if test="settleFormula != null">
+        SETTLE_FORMULA = #{settleFormula,jdbcType=VARCHAR},
+      </if>
+      <if test="settleAmount != null">
+        SETTLE_AMOUNT = #{settleAmount,jdbcType=DECIMAL},
+      </if>
+      <if test="debitSno != null">
+        DEBIT_SNO = #{debitSno,jdbcType=VARCHAR},
+      </if>
+      <if test="creditSno != null">
+        CREDIT_SNO = #{creditSno,jdbcType=VARCHAR},
+      </if>
+      <if test="ubgSno != null">
+        UBG_SNO = #{ubgSno,jdbcType=VARCHAR},
+      </if>
+      <if test="transactionRecord != null">
+        TRANSACTION_RECORD = #{transactionRecord,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.smk.pay.order.entity.OrderEntity">
+    update T_ORDER
+    set PAY_GATEWAY_ID = #{payGatewayId,jdbcType=DECIMAL},
+      MERCHANT_ID = #{merchantId,jdbcType=VARCHAR},
+      MERCHANT_NAME = #{merchantName,jdbcType=VARCHAR},
+      BUSINESS_TAG_NAME = #{businessTagName,jdbcType=VARCHAR},
+      BUSINESS_TAG_CODE = #{businessTagCode,jdbcType=DECIMAL},
+      CHANNEL_ID = #{channelId,jdbcType=DECIMAL},
+      ORDER_STATE = #{orderState,jdbcType=DECIMAL},
+      PAY_TYPE = #{payType,jdbcType=DECIMAL},
+      ISSUED_TIME = #{issuedTime,jdbcType=VARCHAR},
+      PAY_TIME = #{payTime,jdbcType=VARCHAR},
+      CLOSE_TIME = #{closeTime,jdbcType=VARCHAR},
+      PERSON = #{person,jdbcType=VARCHAR},
+      USER_ID = #{userId,jdbcType=VARCHAR},
+      CARD_TYPE = #{cardType,jdbcType=DECIMAL},
+      CARD_NO = #{cardNo,jdbcType=VARCHAR},
+      GOODS_AMOUNT = #{goodsAmount,jdbcType=DECIMAL},
+      OTHER_PAY = #{otherPay,jdbcType=DECIMAL},
+      SETTLE_FORMULA = #{settleFormula,jdbcType=VARCHAR},
+      SETTLE_AMOUNT = #{settleAmount,jdbcType=DECIMAL},
+      DEBIT_SNO = #{debitSno,jdbcType=VARCHAR},
+      CREDIT_SNO = #{creditSno,jdbcType=VARCHAR},
+      UBG_SNO = #{ubgSno,jdbcType=VARCHAR},
+      TRANSACTION_RECORD = #{transactionRecord,jdbcType=VARCHAR}
+    where ORDER_ID = #{orderId,jdbcType=VARCHAR}
+  </update>
+</mapper>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+<log4j:configuration xmlns:log4j='http://jakarta.apache.org/log4j/' >
+    <!-- APPENDER -->
+    <appender name="MANAGER-LOG" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="D:/workspace/manager.log" />
+        <param name="Append" value="true" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c{2} - %m%n" />
+        </layout>
+    </appender>
+
+
+    <appender name="CONTROLLER-LOG" class="org.apache.log4j.RollingFileAppender">
+        <param name="File" value="D:/workspace/controller.log" />
+        <param name="Append" value="true" />
+        <param name="MaxBackupIndex" value="10" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c{2} - %m%n" />
+        </layout>
+    </appender>
+
+    <appender name="CONSOLE-LOG" class="org.apache.log4j.ConsoleAppender">
+        <param name="target" value="System.out" />
+        <layout class="org.apache.log4j.PatternLayout">
+            <param name="ConversionPattern" value="%d %-5p %c{2} - %m%n" />
+        </layout>
+    </appender>
+
+    <!-- LOGGER -->
+    <logger name="com.smk.pay.order.manager">
+        <level value="INFO"/>
+        <appender-ref ref="MANAGER-LOG"/>
+    </logger>
+
+    <logger name="com.smk.pay.order.controller">
+        <level value="INFO"/>
+        <appender-ref ref="CONTROLLER-LOG"/>
+    </logger>
+
+    <logger name="com.smk.pay.order">
+        <level value="INFO"/>
+        <appender-ref ref="CONSOLE-LOG"/>
+    </logger>
+</log4j:configuration>
