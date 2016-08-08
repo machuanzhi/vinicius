@@ -43,8 +43,8 @@ public class OrderController {
     @RequestMapping("/add")
     @ResponseBody
     public ResultResponse addOrder(@RequestBody @Validated(OrderGroup.class) OrderInfo orderInfo, BindingResult result) {
-        logger.info("add order, order = " + orderInfo);
 
+        logger.info("add order, order = " + orderInfo);
         ResultResponse resultResponse = ValidatorResultHandler.handle(result, ResultEnum.PARAM_INVALID);
         if (!resultResponse.getIsSucc()) {
             return resultResponse;
